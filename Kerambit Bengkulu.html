@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kerambit Bengkulu — Warisan Tajam Nusantara</title>
+  <meta name="description" content="Kerambit Bengkulu — sejarah, fisik, filosofi, dan galeri interaktif.">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <!-- AOS for scroll animations -->
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#07070a; --card:#0f1115; --muted:#9aa0a6; --accent:#caa24b; --glass: rgba(255,255,255,0.03);
+      --font-sans: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      --font-serif: 'Playfair Display', serif;
+    }
+    [data-theme='light']{
+      --bg:#f7f7f8; --card:#ffffff; --muted:#6b7280; --accent:#b07b29; --glass: rgba(0,0,0,0.03);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%; margin:0; font-family:var(--font-sans); background:linear-gradient(180deg,var(--bg), #0b0b0d); color: #eceff1}
+    a{color:inherit}
+
+    /* Header / Nav */
+    header{position:fixed; inset:12px 24px auto auto; z-index:40}
+    .nav{display:flex; gap:10px; align-items:center; background:var(--glass); padding:8px; border-radius:999px; backdrop-filter:blur(6px); box-shadow:0 6px 20px rgba(2,6,23,0.6)}
+    .nav button{background:transparent;border:0;color:var(--accent); padding:8px 12px;border-radius:999px;cursor:pointer;font-weight:600}
+
+    /* Container */
+    .container{max-width:1100px;margin:120px auto 80px;padding:20px}
+
+    /* Hero */
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:36px;align-items:center}
+    .hero-left h1{font-family:var(--font-serif);font-size:clamp(30px,6vw,48px);margin:0 0 10px;color:var(--accent)}
+    .hero-left p{margin:0 0 18px;color:var(--muted);max-width:58ch}
+    .cta{display:flex;gap:12px}
+    .btn{background:linear-gradient(90deg,var(--accent),#e6c36a);color:#061018;padding:12px 18px;border-radius:12px;border:0;cursor:pointer;font-weight:700;box-shadow:0 6px 25px rgba(202,162,75,0.12)}
+
+    /* Hero image */
+    .hero-art{height:420px;border-radius:20px;overflow:hidden;position:relative;box-shadow:0 20px 60px rgba(2,6,23,0.6)}
+    .hero-art img{width:100%;height:100%;object-fit:cover;transform-origin:center center}
+
+    /* Sections */
+    section{margin-top:60px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); padding:18px; border-radius:16px}
+
+    /* Timeline */
+    .timeline{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:12px}
+    .t-item{padding:14px 18px;border-radius:12px;background:transparent;border:1px solid rgba(255,255,255,0.04);cursor:pointer}
+
+    /* Description row */
+    .desc-row{display:grid;grid-template-columns:1fr 360px;gap:24px;align-items:start}
+    .desc-img{border-radius:12px;overflow:hidden;height:320px}
+    .desc-img img{width:100%;height:100%;object-fit:cover;transition:transform .7s ease}
+    .desc-img:hover img{transform:rotate(-6deg) scale(1.02)}
+
+    /* Maker slider */
+    .maker{display:flex;gap:12px;align-items:center}
+    .maker .steps{flex:1;display:flex;overflow:hidden;border-radius:12px}
+    .step{min-width:100%;padding:28px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent)}
+    .controls{display:flex;gap:8px}
+
+    /* Gallery */
+    .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+    .gallery img{width:100%;height:180px;object-fit:cover;border-radius:12px;cursor:pointer;transition:transform .25s}
+    .gallery img:hover{transform:scale(1.03)}
+
+    /* Modal */
+    .modal{position:fixed;inset:0;background:rgba(2,6,23,0.8);display:flex;align-items:center;justify-content:center;z-index:100;opacity:0;pointer-events:none;transition:opacity .2s}
+    .modal.open{opacity:1;pointer-events:auto}
+    .modal img{max-width:92vw;max-height:86vh;border-radius:10px}
+
+    footer{margin-top:60px;padding:30px;text-align:center;color:var(--muted)}
+
+    /* Responsive */
+    @media (max-width:900px){
+      .hero{grid-template-columns:1fr;}
+      .hero-art{height:300px}
+      .desc-row{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav" role="navigation">
+      <button id="toggleTheme" title="Toggle theme">🌗</button>
+      <button id="playMusic" title="Play music">▶︎ Musik</button>
+      <button id="openGallery">Galeri</button>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-left" data-aos="fade-up">
+        <h1>Kerambit Bengkulu</h1>
+        <p>Kerambit: bentuknya melengkung mirip kuku kucing, sarat filosofi—dari alat pertanian menjadi simbol keberanian dan kewaspadaan. Selami sejarah, cara pembuatan, dan makna budaya di balik bilah ini.</p>
+        <div class="cta">
+          <button class="btn" id="btnExplore">Jelajahi</button>
+          <a class="btn" href="#galeri" style="background:transparent;border:1px solid var(--accent);color:var(--accent);">Lihat Galeri</a>
+        </div>
+        <div style="margin-top:18px;color:var(--muted);font-size:14px">Tip: klik foto untuk memperbesar • aktifkan musik untuk suasana</div>
+      </div>
+      <div class="hero-art card" data-aos="fade-left">
+        <img id="heroImg" src="web karambit/kerambit_169.jpeg" alt="Kerambit Bengkulu" loading="eager">
+      </div>
+    </section>
+
+    <!-- HISTORY -->
+    <section id="history" data-aos="fade-up">
+      <h2 style="font-family:var(--font-serif);color:var(--accent);">Sejarah & Asal Mula</h2>
+      <div class="card">
+        <p>Kerambit muncul di wilayah Bengkulu, dipakai oleh masyarakat Rejang dan Serawai. Awalnya dipakai sebagai alat pertanian dan alat bantu—lambat laun juga berfungsi sebagai alat bela diri dan simbol status. Gunakan timeline di bawah untuk menelusuri perjalanan sejarahnya.</p>
+
+        <div class="timeline" id="timeline">
+          <div class="t-item" data-year="1700">Abad ke-18<br><small>Alat pertanian</small></div>
+          <div class="t-item" data-year="1800">Abad ke-19<br><small>Teknik pertempuran</small></div>
+          <div class="t-item" data-year="1900">Abad ke-20<br><small>Simbol budaya</small></div>
+          <div class="t-item" data-year="2000">Abad ke-21<br><small>Revitalisasi & koleksi</small></div>
+        </div>
+
+        <div id="timelineDetail" style="margin-top:14px;color:var(--muted)">Pilih sebuah titik di timeline untuk melihat detail sejarah.</div>
+      </div>
+    </section>
+
+    <!-- DESCRIPTION -->
+    <section id="description" data-aos="fade-up">
+      <h2 style="font-family:var(--font-serif);color:var(--accent);">Deskripsi Fisik</h2>
+      <div class="desc-row">
+        <div>
+          <div class="card">
+            <h3>Bentuk & Bahan</h3>
+            <p>Kerambit memiliki bilah melengkung dengan cincin di pangkal gagang. Umumnya terbuat dari baja atau besi, sedangkan gagang dibuat dari kayu atau tanduk—sering dihias ukiran khas Bengkulu.</p>
+            <ul style="color:var(--muted)">
+              <li>Bilah melengkung seperti kuku</li>
+              <li>Cincin di ujung gagang untuk kontrol</li>
+              <li>Gagang dengan ukiran lokal</li>
+            </ul>
+          </div>
+
+          <div style="height:18px"></div>
+
+          <div class="card">
+            <h3>Filosofi</h3>
+            <p style="color:var(--muted)">Kerambit melambangkan kewaspadaan, ketepatan, dan kekuatan yang tersembunyi — mirip dengan sikap budaya masyarakat Bengkulu yang berhati-hati namun penuh ketegasan.</p>
+          </div>
+        </div>
+
+        <div class="desc-img card" id="descImgWrap">
+          <img id="descImg" src="web karambit/Kerambit.jpg" alt="Detail Kerambit">
+        </div>
+      </div>
+    </section>
+
+    <!-- MAKING / PHASES -->
+    <section id="making" data-aos="fade-up">
+      <h2 style="font-family:var(--font-serif);color:var(--accent);">Cara Pembuatan & Filosofi</h2>
+      <div class="card maker">
+        <div class="steps" id="makerSteps">
+          <div class="step">
+            <h3>1. Pemilihan Bahan</h3>
+            <p style="color:var(--muted)">Pilih baja atau besi berkualitas. Gagang dipilih dari kayu keras atau tanduk.</p>
+          </div>
+          <div class="step">
+            <h3>2. Pembentukan Bilah</h3>
+            <p style="color:var(--muted)">Pemanasaan dan penempaan memunculkan bentuk melengkung khas Kerambit.</p>
+          </div>
+          <div class="step">
+            <h3>3. Pengasahan & Ukiran</h3>
+            <p style="color:var(--muted)">Bilah diasah dan gagang diukir — motif lokal sering ditambahkan.</p>
+          </div>
+        </div>
+        <div class="controls">
+          <button class="btn" id="prevStep">◀</button>
+          <button class="btn" id="nextStep">▶</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section id="galeri" data-aos="fade-up">
+      <h2 style="font-family:var(--font-serif);color:var(--accent);">Galeri</h2>
+      <div class="gallery card" id="galleryGrid">
+        <img src="web karambit/250px-Penggunaan_kerambit.jpg" alt="Kerambit 1" data-full="assets/kerambit-1.jpg">
+        <img src="web karambit/kerambit-senjata-tradisional-minangkabau-dalam-serial-halfworlds-hbo-asia.webp" alt="Kerambit 2" data-full="assets/kerambit-2.jpg">
+        <img src="web karambit/kerambit_169.jpeg" alt="Kerambit 3" data-full="assets/kerambit-3.jpg">
+        <img src="web karambit/Kerambit.jpg" alt="Kerambit 4" data-full="assets/kerambit-4.jpg">
+      </div>
+    </section>
+
+    <footer>
+      <div style="max-width:800px;margin:0 auto">
+        <p style="margin:0 0 8px">© Kerambit Bengkulu — Warisan Budaya</p>
+        <p style="margin:0;color:var(--muted)">Sumber: Tradisi lisan masyarakat Bengkulu • Foto oleh kolektor lokal</p>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Lightbox Modal -->
+  <div class="modal" id="lightbox">
+    <img src="" alt="Preview">
+  </div>
+
+  <!-- Hidden audio for background (user must press play) -->
+  <audio id="bgAudio" src="assets/serunai-instrumental.mp3" loop preload="none"></audio>
+
+  <!-- Libraries -->
+  <script src="https://unpkg.com/feather-icons"></script>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+  <script>
+    // Initialize AOS
+    AOS.init({duration:800, once:true});
+
+    // Theme toggle
+    const root = document.documentElement;
+    const toggle = document.getElementById('toggleTheme');
+    function setTheme(theme){
+      if(theme === 'light') document.documentElement.setAttribute('data-theme','light');
+      else document.documentElement.removeAttribute('data-theme');
+    }
+    // try saved
+    const saved = localStorage.getItem('kb-theme');
+    setTheme(saved || 'dark');
+    toggle.addEventListener('click', ()=>{
+      const now = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      setTheme(now);
+      localStorage.setItem('kb-theme', now);
+    });
+
+    // Hero subtle float using GSAP
+    gsap.to('#heroImg', {y:-12, duration:4, repeat:-1, yoyo:true, ease:"sine.inOut"});
+
+    // Timeline interaction
+    document.querySelectorAll('.t-item').forEach(item => {
+      item.addEventListener('click', ()=>{
+        const year = item.getAttribute('data-year');
+        const dt = {
+          '1700': 'Kerambit berkembang sebagai alat bantu tani dan alat rumah tangga di komunitas lokal.',
+          '1800': 'Mulai dipelajari teknik bela diri, bilah menjadi identik dengan strategi pertahanan jarak dekat.',
+          '1900': 'Menjadi bagian dari upacara adat dan simbol status dalam komunitas tertentu.',
+          '2000': 'Kolektor dan pengrajin melakukan revitalisasi; mulai dipamerkan di museum dan galeri.'
+        };
+        document.getElementById('timelineDetail').textContent = dt[year] || 'Detail belum tersedia.';
+      })
+    });
+
+    // Maker slider controls
+    const steps = document.getElementById('makerSteps');
+    let stepIndex = 0;
+    document.getElementById('nextStep').addEventListener('click', ()=>{ stepIndex = Math.min(stepIndex+1, steps.children.length-1); updateSteps();});
+    document.getElementById('prevStep').addEventListener('click', ()=>{ stepIndex = Math.max(stepIndex-1, 0); updateSteps();});
+    function updateSteps(){ gsap.to(steps, {x: -stepIndex * steps.clientWidth, duration:0.6, ease:'power2.out'}); }
+
+    // Gallery lightbox
+    const modal = document.getElementById('lightbox');
+    const modalImg = modal.querySelector('img');
+    document.querySelectorAll('#galleryGrid img').forEach(img =>{
+      img.addEventListener('click', ()=>{
+        modalImg.src = img.dataset.full || img.src;
+        modal.classList.add('open');
+      })
+    });
+    modal.addEventListener('click', ()=>{ modal.classList.remove('open'); modalImg.src=''; });
+
+    // Hero explore button scroll
+    document.getElementById('btnExplore').addEventListener('click', ()=>{
+      document.getElementById('history').scrollIntoView({behavior:'smooth'});
+    });
+
+    // Audio controls
+    const audio = document.getElementById('bgAudio');
+    const playBtn = document.getElementById('playMusic');
+    let audioPlaying = false;
+    playBtn.addEventListener('click', async ()=>{
+      try{
+        if(!audioPlaying){ await audio.play(); audioPlaying=true; playBtn.textContent='⏸ Musik'; }
+        else { audio.pause(); audioPlaying=false; playBtn.textContent='▶︎ Musik'; }
+      }catch(e){ alert('Audio gagal diputar — periksa izin/autoplay browser.'); }
+    });
+
+    // Open gallery shortcut in header
+    document.getElementById('openGallery').addEventListener('click', ()=>{ document.getElementById('galeri').scrollIntoView({behavior:'smooth'}); });
+
+    // Sound on click (micro interaction) - gentle click
+    const clickAudio = new Audio('data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBIAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=');
+    document.querySelectorAll('button').forEach(b=> b.addEventListener('mousedown', ()=>{ try{ clickAudio.currentTime=0; clickAudio.play(); }catch(e){} }));
+
+    // Feather icons replacement
+    feather && feather.replace();
+
+    // Resize handler to update slider translation
+    window.addEventListener('resize', ()=> updateSteps());
+
+    // Small: pre-load hero image in case of slow load
+    const hero = document.getElementById('heroImg');
+    hero.addEventListener('error', ()=>{ hero.src = 'https://via.placeholder.com/800x600?text=Kerambit'; });
+
+  </script>
+</body>
+</html>
